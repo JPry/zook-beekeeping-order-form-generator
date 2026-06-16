@@ -13,7 +13,7 @@ type PersistedItem = {
 };
 
 type PersistedState = {
-	customer?: { name?: string; phone?: string };
+	customer?: { name?: string; date?: string };
 	items?: PersistedItem[];
 	sections?: boolean[];
 };
@@ -256,7 +256,7 @@ function saveState() {
 		const state: PersistedState = {
 			customer: {
 				name: ($('cust-name') as HTMLInputElement).value,
-				phone: ($('cust-phone') as HTMLInputElement).value,
+				date: ($('cust-date') as HTMLInputElement).value,
 			},
 			items: sectionRows.flat().map((r) => ({ qty: r.qty, variant: r.variantIndex })),
 			sections: Array.from(document.querySelectorAll<HTMLDetailsElement>('#catalog > details')).map((d) => d.open),
@@ -279,7 +279,7 @@ function loadState() {
 	loadingState = true;
 	if (state.customer) {
 		if (state.customer.name) ($('cust-name') as HTMLInputElement).value = state.customer.name;
-		if (state.customer.phone) ($('cust-phone') as HTMLInputElement).value = state.customer.phone;
+		if (state.customer.date) ($('cust-date') as HTMLInputElement).value = state.customer.date;
 	}
 	if (Array.isArray(state.items)) {
 		const flat = sectionRows.flat();
@@ -312,7 +312,13 @@ function setAllSections(open: boolean) {
 $('live-totals').setAttribute('tax-rate', String(TAX_RATE));
 $('print-totals').setAttribute('tax-rate', String(TAX_RATE));
 
-($('cust-date') as HTMLInputElement).value = new Date().toISOString().slice(0, 10);
+function updateCustomerEmptyFlags() {
+	(['cust-name', 'cust-date'] as const).forEach((id) => {
+		const input = $(id) as HTMLInputElement;
+		input.closest('label')?.classList.toggle('empty', !input.value);
+	});
+}
+
 $('clear-btn').addEventListener('click', clearAll);
 $('expand-all-btn').addEventListener('click', () => setAllSections(true));
 $('collapse-all-btn').addEventListener('click', () => setAllSections(false));
@@ -323,13 +329,17 @@ $('print-btn').addEventListener('click', () => {
 	window.print();
 });
 
-['cust-name', 'cust-phone'].forEach((id) => {
-	$(id).addEventListener('input', saveState);
+['cust-name', 'cust-date'].forEach((id) => {
+	$(id).addEventListener('input', () => {
+		saveState();
+		updateCustomerEmptyFlags();
+	});
 });
 
 renderCatalog();
 loadState();
 recalc();
+updateCustomerEmptyFlags();
 
 // Persist on any line-change (qty or variant) bubbling out of the rows,
 // and on details open/close (toggle doesn't bubble, so capture).

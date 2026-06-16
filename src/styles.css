@@ -381,6 +381,14 @@ button:hover {
 		display: none;
 	}
 
+	.customer label.empty {
+		display: none;
+	}
+
+	.customer:not(:has(label:not(.empty))) {
+		display: none;
+	}
+
 	bee-item-row input[type="number"] {
 		border: none;
 		background: none;
