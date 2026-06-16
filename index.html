@@ -1,48 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Cypress Bee Supply Order Form</title>
-<link rel="stylesheet" href="styles.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cypress Bee Supply Order Form</title>
 </head>
 <body>
 
 <header>
-  <h1>Peter Zook – Cypress Bee Supply</h1>
-  <div class="sub">2026 Pricelist · Order Form</div>
+	<h1>Peter Zook – Cypress Bee Supply</h1>
+	<div class="sub">2026 Pricelist · Order Form</div>
 </header>
 
 <main>
-  <div class="print-header">
-    <h1>Peter Zook – Cypress Bee Supply Order</h1>
-    <div class="sub">1617 Stevenson Road · Franklin, KY 42134</div>
-  </div>
+	<div class="print-header">
+		<h1>Peter Zook – Cypress Bee Supply Order</h1>
+		<div class="sub">1617 Stevenson Road · Franklin, KY 42134</div>
+	</div>
 
-  <div class="customer">
-    <label>Name: <input type="text" id="cust-name" placeholder="Your name"></label>
-    <label>Date: <input type="date" id="cust-date"></label>
-    <label>Phone: <input type="text" id="cust-phone" placeholder="optional"></label>
-  </div>
+	<div class="customer">
+		<label>Name: <input type="text" id="cust-name" placeholder="Your name"></label>
+		<label>Date: <input type="date" id="cust-date"></label>
+		<label>Phone: <input type="text" id="cust-phone" placeholder="optional"></label>
+	</div>
 
-  <div class="toolbar">
-    <button class="secondary" id="expand-all-btn">Expand All</button>
-    <button class="secondary" id="collapse-all-btn">Collapse All</button>
-  </div>
+	<div class="toolbar">
+		<button class="secondary" id="expand-all-btn">Expand All</button>
+		<button class="secondary" id="collapse-all-btn">Collapse All</button>
+	</div>
 
-  <div id="catalog"></div>
+	<div id="catalog"></div>
 
-  <bee-totals id="print-totals" class="print-only-totals" tax-rate="0.06" subtotal="0"></bee-totals>
+	<bee-totals id="print-totals" class="print-only-totals"></bee-totals>
 </main>
 
 <footer>
-  <bee-totals id="live-totals" tax-rate="0.06" subtotal="0"></bee-totals>
-  <div class="actions">
-    <button class="secondary" id="clear-btn">Clear All</button>
-    <button id="print-btn">Print Order</button>
-  </div>
+	<bee-totals id="live-totals"></bee-totals>
+	<div class="actions">
+		<button class="secondary" id="clear-btn">Clear All</button>
+		<button id="print-btn">Print Order</button>
+	</div>
 </footer>
 
-<script src="components.js"></script>
-<script src="app.js"></script>
+<script type="module" src="/src/app.ts"></script>
 </body>
 </html>
