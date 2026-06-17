@@ -188,7 +188,9 @@ let loadingState = false;
 
 function $(id: string): HTMLElement {
 	const el = document.getElementById(id);
-	if (!el) throw new Error(`Missing element #${id}`);
+	if (!el) {
+		throw new Error( `Missing element #${ id }` );
+	}
 	return el;
 }
 
@@ -240,10 +242,15 @@ function recalc() {
 		let active = 0;
 		sectionRows[si].forEach((row) => {
 			const line = row.lineTotal;
-			if (line > 0) { subtotal += line; active++; }
+			if (line > 0) {
+				subtotal += line;
+				active++;
+			}
 		});
 		const section = document.querySelector(`details[data-section="${si}"]`) as HTMLElement | null;
-		if (section) section.dataset.hasItems = active > 0 ? 'true' : 'false';
+		if (section) {
+			section.dataset.hasItems = active > 0 ? 'true' : 'false';
+		}
 	});
 	const subStr = subtotal.toFixed(2);
 	$('live-totals').setAttribute('subtotal', subStr);
@@ -251,7 +258,9 @@ function recalc() {
 }
 
 function saveState() {
-	if (loadingState) return;
+	if (loadingState) {
+		return;
+	}
 	try {
 		const state: PersistedState = {
 			customer: {
@@ -274,24 +283,38 @@ function loadState() {
 	} catch {
 		return;
 	}
-	if (!state) return;
+	if (!state) {
+		return;
+	}
 
 	loadingState = true;
 	if (state.customer) {
-		if (state.customer.name) ($('cust-name') as HTMLInputElement).value = state.customer.name;
-		if (state.customer.date) ($('cust-date') as HTMLInputElement).value = state.customer.date;
+		if (state.customer.name) {
+			($('cust-name') as HTMLInputElement).value = state.customer.name;
+		}
+		if (state.customer.date) {
+			($('cust-date') as HTMLInputElement).value = state.customer.date;
+		}
 	}
 	if (Array.isArray(state.items)) {
 		const flat = sectionRows.flat();
 		state.items.forEach((s, i) => {
-			if (i >= flat.length || !s) return;
-			if (typeof s.variant === 'number') flat[i].setVariant(s.variant);
-			if (typeof s.qty === 'number') flat[i].setQty(s.qty);
+			if (i >= flat.length || !s) {
+				return;
+			}
+			if (typeof s.variant === 'number') {
+				flat[ i ].setVariant( s.variant );
+			}
+			if (typeof s.qty === 'number') {
+				flat[ i ].setQty( s.qty );
+			}
 		});
 	}
 	if (Array.isArray(state.sections)) {
 		document.querySelectorAll<HTMLDetailsElement>('#catalog > details').forEach((d, i) => {
-			if (typeof state!.sections![i] === 'boolean') d.open = state!.sections![i];
+			if (typeof state!.sections![i] === 'boolean') {
+				d.open = state!.sections![i];
+			}
 		});
 	}
 	loadingState = false;

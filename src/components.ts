@@ -22,8 +22,13 @@ type VariantChangeDetail = {
 export const fmt = (n: number): string => '$' + n.toFixed(2);
 
 export function tieredFramePrice(qty: number): number {
-	if (qty >= 5000) return 1.00;
-	if (qty >= 50) return 1.05;
+	if (qty >= 5000) {
+		return 1.00;
+	}
+	if (qty >= 50) {
+		return 1.05;
+	}
+
 	return 1.20;
 }
 
@@ -37,14 +42,18 @@ export class BeeVariantToggle extends HTMLElement {
 	private _rendered = false;
 
 	connectedCallback() {
-		if (this._rendered) return;
+		if (this._rendered) {
+			return;
+		}
 		this._selected = 0;
 		this.render();
 		this._rendered = true;
 	}
 
 	render() {
-		if (!this.variants?.length) return;
+		if (!this.variants?.length) {
+			return;
+		}
 		this.innerHTML = this.variants
 			.map((v, i) => `<button type="button" data-idx="${i}" class="${i === this._selected ? 'active' : ''}">${v.label}</button>`)
 			.join('');
@@ -54,12 +63,16 @@ export class BeeVariantToggle extends HTMLElement {
 	private _onClick = (e: MouseEvent) => {
 		const target = e.target as HTMLElement;
 		const btn = target.closest('button[data-idx]') as HTMLButtonElement | null;
-		if (!btn) return;
+		if (!btn) {
+			return;
+		}
 		this.select(parseInt(btn.dataset.idx!));
 	};
 
 	select(idx: number) {
-		if (idx === this._selected || !this.variants) return;
+		if (idx === this._selected || !this.variants) {
+			return;
+		}
 		this._selected = idx;
 		this.querySelectorAll('button').forEach((b) =>
 			b.classList.toggle('active', parseInt(b.dataset.idx!) === idx)
@@ -70,8 +83,13 @@ export class BeeVariantToggle extends HTMLElement {
 		}));
 	}
 
-	get selected() { return this._selected; }
-	get current(): Variant | undefined { return this.variants?.[this._selected]; }
+	get selected() {
+		return this._selected;
+	}
+
+	get current(): Variant | undefined {
+		return this.variants?.[this._selected];
+	}
 }
 customElements.define('bee-variant-toggle', BeeVariantToggle);
 
@@ -93,7 +111,9 @@ export class BeeItemRow extends HTMLElement {
 	private _printVariant?: HTMLSpanElement;
 
 	connectedCallback() {
-		if (this._rendered || !this.item) return;
+		if (this._rendered || !this.item) {
+			return;
+		}
 		this._qty = 0;
 		this._variantIdx = 0;
 		this._render();
@@ -187,14 +207,28 @@ export class BeeItemRow extends HTMLElement {
 
 	get unitPrice(): number {
 		const item = this.item!;
-		if (item.tiered) return tieredFramePrice(this._qty);
-		if (item.variants) return item.variants[this._variantIdx].price;
+		if (item.tiered) {
+			return tieredFramePrice( this._qty );
+		}
+
+		if (item.variants) {
+			return item.variants[ this._variantIdx ].price;
+		}
+
 		return item.price ?? 0;
 	}
 
-	get qty() { return this._qty; }
-	get variantIndex() { return this._variantIdx; }
-	get lineTotal() { return this._qty * this.unitPrice; }
+	get qty() {
+		return this._qty;
+	}
+
+	get variantIndex() {
+		return this._variantIdx;
+	}
+
+	get lineTotal() {
+		return this._qty * this.unitPrice;
+	}
 
 	setQty(n: number) {
 		this._qty = Math.max(0, n | 0);
@@ -203,7 +237,9 @@ export class BeeItemRow extends HTMLElement {
 	}
 
 	setVariant(idx: number) {
-		if (this._toggle) this._toggle.select(idx);
+		if (this._toggle) {
+			this._toggle.select( idx );
+		}
 	}
 
 	reset() {
@@ -218,10 +254,19 @@ customElements.define('bee-item-row', BeeItemRow);
 //   subtotal="123.45" tax-rate="0.06"
 // Re-renders on attribute change.
 export class BeeTotals extends HTMLElement {
-	static get observedAttributes() { return ['subtotal', 'tax-rate']; }
+	static get observedAttributes() {
+		return ['subtotal', 'tax-rate'];
+	}
 
-	connectedCallback() { this._render(); }
-	attributeChangedCallback() { if (this.isConnected) this._render(); }
+	connectedCallback() {
+		this._render();
+	}
+
+	attributeChangedCallback() {
+		if (this.isConnected) {
+			this._render();
+		}
+	}
 
 	private _render() {
 		const subtotal = parseFloat(this.getAttribute('subtotal') || '0');
