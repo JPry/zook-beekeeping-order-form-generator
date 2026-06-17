@@ -302,6 +302,129 @@ button:hover {
 	display: none;
 }
 
+@media (max-width: 640px) {
+	header {
+		padding: 12px 16px;
+	}
+
+	header h1 {
+		font-size: 17px;
+	}
+
+	header .sub {
+		font-size: 12px;
+	}
+
+	main {
+		padding: 12px 12px 220px;
+	}
+
+	.customer {
+		padding: 10px 12px;
+		gap: 8px;
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.customer label {
+		width: 100%;
+	}
+
+	.customer input {
+		min-width: 0;
+		flex: 1;
+		width: 100%;
+	}
+
+	.toolbar {
+		gap: 6px;
+	}
+
+	.toolbar button {
+		flex: 1;
+		padding: 8px 10px;
+	}
+
+	summary {
+		padding: 12px 14px;
+	}
+
+	/* Stack item rows vertically on mobile: name on top, qty/price/subtotal below. */
+	.item-grid {
+		display: block;
+	}
+
+	bee-item-row {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		grid-template-areas:
+			'name name name'
+			'qty price subtotal';
+		column-gap: 12px;
+		row-gap: 4px;
+		padding: 10px 12px;
+		border-top: 1px solid var(--border);
+	}
+
+	bee-item-row:first-of-type {
+		border-top: none;
+	}
+
+	bee-item-row:nth-of-type(even) {
+		background: var(--row-alt);
+	}
+
+	bee-item-row:nth-of-type(even) > .cell {
+		background: none;
+	}
+
+	bee-item-row > .cell {
+		padding: 0;
+		min-width: 0;
+	}
+
+	bee-item-row > .cell.name {
+		grid-area: name;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	bee-item-row > .cell.qty {
+		grid-area: qty;
+		justify-content: flex-start;
+	}
+
+	bee-item-row > .cell.price {
+		grid-area: price;
+		justify-content: flex-start;
+		color: var(--muted);
+		font-size: 14px;
+	}
+
+	bee-item-row > .cell.subtotal {
+		grid-area: subtotal;
+		justify-content: flex-end;
+		min-width: 0;
+	}
+
+	bee-variant-toggle {
+		margin-left: 0;
+	}
+
+	footer {
+		padding: 10px 12px;
+	}
+
+	.actions {
+		gap: 6px;
+	}
+
+	.actions button {
+		flex: 1;
+		padding: 10px 12px;
+	}
+}
+
 @media print {
 	header, footer, .actions, .toolbar {
 		display: none !important;
@@ -346,6 +469,19 @@ button:hover {
 		padding: 4px 12px 2px;
 		border-bottom: 1px solid #333;
 		color: #333;
+	}
+
+	.cell.header.name {
+		justify-content: flex-start;
+	}
+
+	.cell.header.qty {
+		justify-content: center;
+	}
+
+	.cell.header.price,
+	.cell.header.subtotal {
+		justify-content: flex-end;
 	}
 
 	body {
