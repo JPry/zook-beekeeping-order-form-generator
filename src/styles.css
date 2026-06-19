@@ -466,9 +466,13 @@ button:hover {
 		background: none;
 	}
 
-	/* Reorder columns for print: qty | description | unit price | subtotal */
+	/* Reorder columns for print: qty | description | unit price | subtotal.
+	   `dense` auto-flow lets each row backfill the column-1 slot that's
+	   otherwise left empty when the description (first in DOM) lands in
+	   column 2 — without it, every item splits across two rows. */
 	.item-grid {
 		grid-template-columns: auto 1fr auto auto;
+		grid-auto-flow: dense;
 	}
 
 	bee-item-row > .cell.qty,
