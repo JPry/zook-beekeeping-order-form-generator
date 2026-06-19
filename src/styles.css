@@ -448,7 +448,6 @@ button:hover {
 		border: none;
 		box-shadow: none;
 		margin: 0;
-		page-break-inside: avoid;
 	}
 
 	details:not([data-has-items="true"]) {
@@ -456,14 +455,7 @@ button:hover {
 	}
 
 	details > summary {
-		background: none;
-		border-bottom: 1px solid #999;
-		padding: 8px 0 4px;
-		font-size: 14px;
-	}
-
-	details > summary::before {
-		content: "";
+		display: none;
 	}
 
 	bee-item-row.zero-qty > .cell {
@@ -472,6 +464,31 @@ button:hover {
 
 	bee-item-row:nth-of-type(even) > .cell {
 		background: none;
+	}
+
+	/* Reorder columns for print: qty | description | unit price | subtotal */
+	.item-grid {
+		grid-template-columns: auto 1fr auto auto;
+	}
+
+	bee-item-row > .cell.qty,
+	.cell.header.qty {
+		grid-column: 1;
+	}
+
+	bee-item-row > .cell.name,
+	.cell.header.name {
+		grid-column: 2;
+	}
+
+	bee-item-row > .cell.price,
+	.cell.header.price {
+		grid-column: 3;
+	}
+
+	bee-item-row > .cell.subtotal,
+	.cell.header.subtotal {
+		grid-column: 4;
 	}
 
 	.cell.header {
@@ -483,6 +500,12 @@ button:hover {
 		padding: 4px 12px 2px;
 		border-bottom: 1px solid #333;
 		color: #333;
+	}
+
+	/* With section titles hidden, only show column headers once at the top
+	   instead of repeating them for every section. */
+	details[data-has-items="true"] ~ details[data-has-items="true"] .cell.header {
+		display: none !important;
 	}
 
 	.cell.header.name {
